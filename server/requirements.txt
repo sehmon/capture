@@ -1,0 +1,6 @@
+flask
+flask-cors
+firebase
+google-cloud-vision
+google-cloud-storage
+google-cloud-firestore

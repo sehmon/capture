@@ -1,11 +1,8 @@
-/client/capture-client/node_modules
-
-
 /server/env
 /server/__pycache__
+/server/capture-368502-17fb40fc5dd8.json
+
+/client/capture-client/node_modules
+/client/capture-client/capture-368502-17fb40fc5dd8.json
 
 .DS_Store
-
-client/capture-client/capture-368502-17fb40fc5dd8.json
-
-server/capture-368502-17fb40fc5dd8.json

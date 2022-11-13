@@ -1,0 +1,7 @@
+/client/capture-client/node_modules
+
+
+/server/env
+/server/__pycache__
+
+.DS_Store

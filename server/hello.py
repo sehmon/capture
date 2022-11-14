@@ -4,6 +4,9 @@ from google.cloud import storage, vision, firestore
 import time
 import math
 import base64
+import json
+import pdb
+
 
 config = {
   "apiKey": "AIzaSyDo7QrSzXvWbIPb8XLs8qnCCy4EA9cEmd4",
@@ -41,12 +44,34 @@ def post_image():
   current_time = str(math.floor(time.time()))
   upload_blob_from_memory("photo-captures", decoded_img, photo_upload_name)
   img_properties = run_object_detection(photo_upload_name)
-  doc_ref = db.collection('photos').document(photo_upload_name)
-  doc_ref.set({
-    'properties': 'test properties!!!!',
+
+  object_data = []
+  for i in img_properties.localized_object_annotations:
+    object_data.append(i.name)
+
+  color_data = []
+  for i in img_properties.image_properties_annotation.dominant_colors.colors:
+    color = {
+      'red': i.color.red,
+      'blue': i.color.blue,
+      'green': i.color.green,
+      'score': i.score,
+      'pixel_fraction': i.pixel_fraction
+    }
+    color_data.append(color)
+
+  post_submission = {
+    'img_name': photo_upload_name,
+    'annotations': object_data,
+    'colors': color_data,
     'img_url': img_url
-  })
-  return {"status": 200, "details": "It's all good"}
+  }
+
+  print("Saving to Firebase")
+  doc_ref = db.collection('photos').document(photo_upload_name)
+  doc_ref.set(post_submission)
+  print("Sending response")
+  return {"status": 200, "details": post_submission}
 
 def upload_blob_from_memory(bucket_name, contents, destination_blob_name):
     """Uploads a file to the bucket."""

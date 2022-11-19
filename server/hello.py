@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from google.cloud import storage, vision, firestore
 import time
@@ -6,7 +6,6 @@ import math
 import base64
 import json
 import pdb
-
 
 config = {
   "apiKey": "AIzaSyDo7QrSzXvWbIPb8XLs8qnCCy4EA9cEmd4",
@@ -22,10 +21,20 @@ db = firestore.Client(project="capture-368502")
 
 app = Flask(__name__)
 CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route("/")
 def hello_world():
   return "Hello World"
+
+@app.route("/posts", methods = ['GET'])
+def get_posts():
+  collection_ref = db.collection('posts').stream()
+  post_list = []
+  for doc in collection_ref:
+    post_list.append(doc.to_dict())
+  
+  return post_list
   
 @app.route("/images", methods = ['GET', 'POST'])
 def post_image():
@@ -68,7 +77,7 @@ def post_image():
   }
 
   print("Saving to Firebase")
-  doc_ref = db.collection('photos').document(photo_upload_name)
+  doc_ref = db.collection('posts').document(photo_upload_name)
   doc_ref.set(post_submission)
   print("Sending response")
   return {"status": 200, "details": post_submission}
@@ -107,3 +116,4 @@ def run_object_detection(cloud_photo_name):
       ]
   })
   return response
+

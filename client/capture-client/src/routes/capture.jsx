@@ -1,11 +1,9 @@
-import logo from './logo.svg';
-import './App.css';
-
 import React from 'react';
 import Camera from 'react-html5-camera-photo';
 import 'react-html5-camera-photo/build/css/index.css';
+import { Link } from 'react-router-dom';
 
-function App() {
+function Capture() {
 
   function handleTakePhoto (dataUri) {
     // Do stuff with the photo...
@@ -28,10 +26,11 @@ function App() {
   return (
     <div className="App">
       <Camera
-        onTakePhoto = { (dataUri) => { handleTakePhoto(dataUri) } }
+        onTakePhoto = { (dataUri) => { handleTakePhoto(dataUri); } }
       />
+      <Link to="/">Home</Link>
     </div>
   );
 }
 
-export default App;
+export default Capture;

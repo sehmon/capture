@@ -6,6 +6,8 @@ import math
 import base64
 import json
 import pdb
+import datetime
+
 
 config = {
   "apiKey": "AIzaSyDo7QrSzXvWbIPb8XLs8qnCCy4EA9cEmd4",
@@ -69,11 +71,18 @@ def post_image():
     }
     color_data.append(color)
 
+  # Get date
+  dt = datetime.datetime.now(datetime.timezone.utc)
+  utc_time = dt.replace(tzinfo=datetime.timezone.utc)
+  utc_timestamp = utc_time.timestamp()
+
+  # Put final object together
   post_submission = {
     'img_name': photo_upload_name,
     'annotations': object_data,
     'colors': color_data,
-    'img_url': img_url
+    'img_url': img_url,
+    'timestamp': utc_timestamp,
   }
 
   print("Saving to Firebase")

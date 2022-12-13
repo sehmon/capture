@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 
 function Capture() {
 
+  let photoTaken = false;
+
   function handleTakePhoto (dataUri) {
     // Do stuff with the photo...
     console.log('takePhoto');
@@ -20,7 +22,10 @@ function Capture() {
     };
     fetch('http://127.0.0.1:5000/images', requestOptions)
         .then(response => response.json())
-        .then(data => console.log(data));
+        .then( data => {
+          console.log(data);
+          photoTaken = true;
+        });
   }
 
   return (

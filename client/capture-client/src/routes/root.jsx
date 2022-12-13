@@ -29,9 +29,10 @@ function Root() {
   });
 
   return (
-    <>
+    <ProjectContainer>
       <HomeHeader>
         <h1 >Capture</h1>
+        <p>{posts.length} entries</p>
         <hr/>
       </HomeHeader>
       <CaptureLink>
@@ -43,7 +44,8 @@ function Root() {
       {
         posts.map((post, i) => 
         <>
-        <p><b>{post.img_name}</b></p>
+        <b><p>Submitted by user: {post.img_name.split(".")[0]}</p></b>
+        <p>3,500 miles away</p>
         {
           post.timestamp &&
           <p>{post.timestamp}</p>
@@ -51,15 +53,19 @@ function Root() {
         <ImageSquare key={i}>
           {
             post.annotations.map((category, j) => 
-            <p>{category}</p>
+            <p>{(j !== 0) && ", "} {category}</p>
           )}
         </ImageSquare>
         </>
       )}
     </PostFeed>
-    </>
+  </ProjectContainer>
   );
 }
+
+const ProjectContainer = styled.div`
+  background-color: "DDDDDD";
+`
 
 const HomeHeader = styled.header`
   position: sticky;
@@ -85,6 +91,7 @@ const PostFeed = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #DDDDDD;
 `
 
 const ImageSquare = styled.div`
@@ -93,8 +100,10 @@ const ImageSquare = styled.div`
   margin-bottom: 60px;
   border: 1px solid black;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
+  background-color: #FFFFFF;
 `
 
 export default Root;
